@@ -1,0 +1,50 @@
+# Postado para o Forum Gamer's board.
+
+# Variaveis
+# {nome} = NOME DO JOGADOR(A)
+# {cliques} = TOTAL DE CLIQUES
+# {porcentagem} = PORCENTAGEM DE CLIQUES EM SEGUNDOS.
+# {recorde} = RECORDE DO JOGADOR(A)
+
+# true = HABILITAR SOM
+# false = NAO REPRODUZIR SOM
+
+# COLOQUE ABAIXO O NOME DO SOM E ALTERNE PARA true OU false CASO QUEIRA O SOM QUANDO O JOGAR FAZER OS CLIQUES.
+Habilitar_Som: true
+Som: CLICK
+
+Nome_Villager: "&a[CM] MiniGame Cliques"
+
+# NAO SABE OS NOMES DOS SONS? SEGUE O LINK COM TODOS OS NOMES: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+
+# Configure todas Mensagens Abaixo:
+Msg_Resultado:
+- " "
+- "&a[CM] &7Cliques Por Segundo: &a&l{porcentagem}"
+- "&a[CM] &7Total de cliques: &a&l{cliques}"
+- "&a[CM] §7Recorde: &c&l{recorde}"
+- " "
+
+Msg_Recorde:
+- " "
+- "&a[CM] &7Cliques Por Segundo: &a&l{porcentagem}"
+- "&a[CM] &7Total de cliques: &a&l{cliques}"
+- "&a[CM] §7Parabens voce bateu seu novo recorde: &6&l{recorde}"
+- " "
+
+Msg_Começando:
+  1: "&a[CM] &7Começando Em &c5 &7Segundos"
+  2: "&a[CM] &7Começando Em &c4 &7Segundos"
+  3: "&a[CM] &7Começando Em &c3 &7Segundos"
+  4: "&a[CM] &7Começando Em &c2 &7Segundos"
+  5: "&a[CM] &7Começando Em &c1 &7Segundos"
+  Iniciou: "&a[CM] &7Começou, clique rapidamente mas nao se esqueça mas &cSomente os cliques no ar são contabilizados."
+
+
+# Configure o nome do Inventario e outras coisas adicionais:
+Nome_Inventario: "          &a[CM MiniGame]"
+ID_ItemEnfeite: 102
+ID_ItemIniciar: 69
+Nome_ItemIniciar: "&aIniciar !"
+Lore_ItemIniciar: "&aClique aqui para iniciar a contagem !"
+  
