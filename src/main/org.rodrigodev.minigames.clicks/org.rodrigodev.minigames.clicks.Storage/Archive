@@ -1,0 +1,43 @@
+package org.rodrigodev.minigames.clicks.Storage;
+
+import java.io.File;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.rodrigodev.minigames.clicks.Click;
+
+public class Archive {
+
+	public static Archive instance;
+	
+    public final FileConfiguration Configuraçao;
+    public final File ConfiguraçaoFile;
+
+    public Archive(Plugin plugin) {
+    	
+    	File dataDirectory = Click.get().getDataFolder();
+        this.ConfiguraçaoFile = new File(dataDirectory, "Click.yml");
+
+        if (!ConfiguraçaoFile.exists()) {
+            plugin.saveResource("Click.yml", false);
+        }
+
+        Configuraçao = YamlConfiguration.loadConfiguration(ConfiguraçaoFile);
+        instance = this;
+    }
+
+
+    public static Archive get() {
+        return instance;
+    }
+    
+    public void carregarClick(File file, FileConfiguration configuration) {
+    	  try {
+    	    Configuraçao.load(ConfiguraçaoFile);
+    	  } catch (Exception e) {
+    	    e.printStackTrace();
+    	  }
+    	}
+	
+}
