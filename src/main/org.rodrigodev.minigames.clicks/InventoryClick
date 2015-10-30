@@ -1,0 +1,76 @@
+package org.rodrigodev.minigames.clicks;
+
+import java.util.Arrays;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.rodrigodev.minigames.clicks.Storage.Archive;
+
+public class InventoryClick implements Listener{
+
+	
+	  public static void menuClicks(Player p)
+	  {
+	    Inventory Clicks = Bukkit.createInventory(p, 9, Archive.instance.Configuraçao.getString("Nome_Inventario").replace("&", "§"));
+
+	    @SuppressWarnings("deprecation")
+		ItemStack Nada = new ItemStack(Material.getMaterial(Archive.instance.Configuraçao.getInt("ID_ItemEnfeite")), 1);
+	    ItemMeta NadaM = Nada.getItemMeta();
+	    NadaM.setDisplayName("  ");
+	    Nada.setItemMeta(NadaM);
+
+	    @SuppressWarnings("deprecation")
+		ItemStack Alavanca = new ItemStack(Material.getMaterial(Archive.instance.Configuraçao.getInt("ID_ItemIniciar")));
+	    ItemMeta AlavancaM = Alavanca.getItemMeta();
+	    AlavancaM.setDisplayName(Archive.instance.Configuraçao.getString("Nome_ItemIniciar").replace("&", "§"));
+	    AlavancaM.setLore(Arrays.asList(Archive.instance.Configuraçao.getString("Lore_ItemIniciar").replace("&", "§")));
+	    Alavanca.setItemMeta(AlavancaM);
+
+	    Clicks.setItem(0, Nada);
+	    Clicks.setItem(1, Nada);
+	    Clicks.setItem(2, Nada);
+	    Clicks.setItem(3, Nada);
+	    
+	    Clicks.setItem(4, Alavanca);
+	    
+	    Clicks.setItem(5, Nada);
+	    Clicks.setItem(6, Nada);
+	    Clicks.setItem(7, Nada);
+	    Clicks.setItem(8, Nada);
+
+	    p.playSound(p.getLocation(), Sound.LEVEL_UP, 3F, 2F);
+	    p.openInventory(Clicks);
+	  }
+	
+	  
+	  
+	  @EventHandler
+	  public void interactClicks(InventoryClickEvent e)
+	  {
+	    Inventory inv = e.getInventory();
+	    Player p = (Player)e.getWhoClicked();
+	    
+	    	if ((e.getCurrentItem() != null) && (e.getCurrentItem().getItemMeta() != null))
+    	    {
+    	      if (inv.getTitle().equals(Archive.instance.Configuraçao.getString("Nome_Inventario").replace("&", "§")))
+    	      {
+    	        e.setCancelled(true);
+    	        if (e.getCurrentItem().getItemMeta().getDisplayName().equals(Archive.instance.Configuraçao.getString("Nome_ItemIniciar").replace("&", "§")))
+    	        {
+    	        	 p.closeInventory();
+    	        	Event.Principal(p);
+    	        	
+    	          }
+    	        }
+    	    }
+	  }
+	  
+}
