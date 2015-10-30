@@ -1,0 +1,10 @@
+name: RDClique
+version: 1.1
+description: MiniGame Clicks bata seu recorde :D
+authors: [RodrigoDEV]
+main: org.rodrigodev.minigames.clicks.Click
+
+commands:
+  rdclique:
+      description: Comando Principal.
+
