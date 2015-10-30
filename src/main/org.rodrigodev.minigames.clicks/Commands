@@ -1,0 +1,111 @@
+package org.rodrigodev.minigames.clicks;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.entity.Zombie;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.rodrigodev.minigames.clicks.Storage.Archive;
+
+public class Commands implements Listener, CommandExecutor{
+	
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
+	  {
+	    if (!(sender instanceof Player))
+	    {
+	      sender.sendMessage("§a[CM] §cVoce nao e um jogador seu bobinho!");
+	      return false;
+	    }
+	    Player p = (Player)sender;
+	      if (cmd.getName().equalsIgnoreCase("rdclique"))
+		    {
+		      if (args.length == 0)
+		      {
+				   if(p.hasPermission("RDClickMiniGame.admin"))
+				      {
+					   p.sendMessage("           §a§l[RDClique MiniGame] ");
+				    	  p.sendMessage("§7/rdclique reload - §ePara dar reload na configuraçao.");
+				    	  p.sendMessage("§7/rdclique villager - §epara criar o Villager do MiniGame.");	   
+				      }
+				    		   else{
+				    			   p.sendMessage("§a[CM] §eSem permissao bobinho(a).");
+				    	  
+				       }
+		    	  
+		        return false;
+		      }
+		      if ((args.length == 1) && (args[0].equalsIgnoreCase("reload"))){
+		    		   if(p.hasPermission("RDClickMiniGame.admin"))
+		      {
+		    			   Archive.instance.carregarClick(Archive.instance.ConfiguraçaoFile, Archive.instance.Configuraçao);
+		 		    	  p.sendMessage("§a[CM] §7Configuraçoes Recarregadas.");	   
+		      }
+		    		   else{
+		    			   p.sendMessage("§a[CM] §eSem permissao bobinho(a).");
+		    	  
+		       }
+		    	  
+		      }
+		      else if ((args.length == 1) && (args[0].equalsIgnoreCase("villager"))){
+		        if(p.hasPermission("RDClickMiniGame.admin"))
+		      {
+		        	 @SuppressWarnings("deprecation")
+						Villager villager = (Villager)p.getWorld().spawnCreature(p.getLocation(), EntityType.VILLAGER);
+				        
+				        villager.setCustomName(Archive.instance.Configuraçao.getString("Nome_Villager").replace("&", "§"));
+				        villager.setCustomNameVisible(true);
+				        
+				        villager.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 999999, 99999), false);
+				        villager.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 999999, 99999), false);
+				        
+				        p.sendMessage("§a[CM] §eNPC do MiniGame criado.");
+		        	
+		      }
+		      else{
+		        	 p.sendMessage("§a[CM] §eSem permissao bobinho(a).");
+		       }
+		      }
+	    }
+	    return false;
+	  }
+	
+	
+	
+	  @EventHandler
+	  public void interactVillager(PlayerInteractEntityEvent e) {
+	    if ((e.getRightClicked() instanceof Villager)) {
+	      Player p = e.getPlayer();
+	      Villager vill = (Villager)e.getRightClicked();
+	      
+	      if (vill.getCustomName().equals(Archive.instance.Configuraçao.getString("Nome_Villager").replace("&", "§"))) {
+	        e.setCancelled(true);
+	        
+	       InventoryClick.menuClicks(p);
+	        
+	      }
+	    }
+	  }
+
+	  @EventHandler
+	  public void DamageVillager(EntityDamageByEntityEvent e) {
+	    if (((e.getEntity() instanceof Villager)) && ((e.getDamager() instanceof Player)) && ((e.getDamager() instanceof Zombie)))
+	    {
+	      Villager vill = (Villager)e.getEntity();
+
+	      if (vill.getCustomName().equals(Archive.instance.Configuraçao.getString("Nome_Villager").replace("&", "§")))
+	      {
+	        e.setCancelled(true);
+	      }
+	    }
+	  }
+
+}
