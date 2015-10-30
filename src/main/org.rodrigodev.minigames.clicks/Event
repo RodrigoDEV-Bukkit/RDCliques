@@ -5,17 +5,20 @@ import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.rodrigodev.minigames.clicks.Storage.Archive;
+import org.rodrigodev.minigames.clicks.Storage.Record;
 
 public class Event implements Listener{
 	
 	
 	 public static ArrayList<String> Cliks = new ArrayList<String>();
-
+	  
 	  public static void Principal(Player p)
 	  {
 	    p.setLevel(0);
@@ -40,13 +43,15 @@ public class Event implements Listener{
 	    }
 	  }
 	  
+	  
+		
 	  @EventHandler
 	  public void Safado(PlayerInteractEvent e) {
 	    Player p = e.getPlayer();
 	    if ((Cliks.contains(p.getName())) && 
 	      (e.getAction() == Action.RIGHT_CLICK_BLOCK)){
 	    	
-	    	p.sendMessage("§a[CM] §cSomente os cliques no ar são contabilizados, ou espere o tempo acabar para continuar seus afazeres !");
+	    	p.sendMessage("§a[CM] §7Somente os cliques no ar são contabilizados, ou espere o tempo acabar para continuar seus afazeres !");
 	      
 	    }
 	  }
@@ -57,15 +62,36 @@ public class Event implements Listener{
 		    Bukkit.getScheduler().scheduleSyncDelayedTask(Click.get(), new Runnable() {
 		    	
 		    	
+		    	
 		      public void run() {
 		    	  
 		    	  
-	    				for (String Mensagem : Archive.instance.Configuraçao.getStringList("Msg_Resultado")){
+		    	  if (p.getLevel() >+ Record.instance.Record.getInt(p.getUniqueId() + ".Recorde")){
+		    		  
+		    		   	for (String Mensagem : Archive.instance.Configuraçao.getStringList("Msg_Recorde")){
 	    					p.sendMessage(Mensagem.replaceAll("&", "§")
 	    							.replace("{nome}", p.getName())
 	    							.replace("{cliques}", Integer.toString(p.getLevel()))
-	    							.replace("{porcentagem}", Integer.toString(p.getLevel() / 10)));
-		    	  }
+	    							.replace("{porcentagem}", Integer.toString(p.getLevel() / 10))
+	    							.replace("{recorde}", Record.instance.Record.getString(p.getUniqueId() + ".Recorde")));
+	    					p.playSound(p.getLocation(), Sound.LEVEL_UP, 5F, 3F);
+	    					
+	    					Record.instance.Record.set(p.getUniqueId() + ".Recorde", Integer.valueOf(p.getLevel()));
+	    					
+		    	      }
+		            	
+		            }else{
+		            	
+		            	for (String Mensagem : Archive.instance.Configuraçao.getStringList("Msg_Resultado")){
+	    					p.sendMessage(Mensagem.replaceAll("&", "§")
+	    							.replace("{nome}", p.getName())
+	    							.replace("{cliques}", Integer.toString(p.getLevel()))
+	    							.replace("{porcentagem}", Integer.toString(p.getLevel() / 10))
+	    							.replace("{recorde}", Record.instance.Record.getString(p.getUniqueId() + ".Recorde")));
+	    					
+		    	      }
+		            }
+		    	  
 		         }
 		       }
 		    , 300L);
@@ -88,6 +114,12 @@ public class Event implements Listener{
 	  
 	  public static void START(Player p) {
 	      
+		  
+		    if (Record.instance.Record.get(p.getUniqueId() + ".Recorde") == null){
+		    	Record.instance.Record.set(p.getUniqueId() + ".Recorde", Integer.valueOf(0));
+		    }
+		    Record.instance.saveRecordes();
+		  
 		     p.sendMessage(Archive.instance.Configuraçao.getString("Msg_Começando.1").replace("&", "§"));
 		     
 		      Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Click.get(), new Runnable()
@@ -141,5 +173,27 @@ public class Event implements Listener{
 		      }
 		      , 100L);
 		  }
+	  
+	  
+	  
+	  @EventHandler
+	  public void DamageVillagerContains(EntityDamageByEntityEvent e) {
+		  
+	    if (((e.getEntity() instanceof Villager)) && ((e.getDamager() instanceof Player)))
+	    {
+	    	Player p = (Player) e.getDamager();
+	    	
+	    	if ((Cliks.contains(p.getName()))){
+	    		
+	      Villager vill = (Villager)e.getEntity();
+
+	      if (vill.getCustomName().equals(Archive.instance.Configuraçao.getString("Nome_Villager").replace("&", "§")))
+	      {
+	        e.setCancelled(true);
+	      }
+	     }
+	    }
+	  }
+
 
 }
