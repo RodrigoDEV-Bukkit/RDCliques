@@ -1,0 +1,53 @@
+package org.rodrigodev.minigames.clicks.Storage;
+
+import java.io.File;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.rodrigodev.minigames.clicks.Click;
+
+public class Record {
+
+	public static Record instance;
+	
+    public final FileConfiguration Record;
+    public final File RecordFile;
+
+    public Record(Plugin plugin) {
+    	
+    	File dataDirectory = Click.get().getDataFolder();
+        this.RecordFile = new File(dataDirectory, "Recordes.yml");
+
+        if (!RecordFile.exists()) {
+            plugin.saveResource("Recordes.yml", false);
+        }
+
+        Record = YamlConfiguration.loadConfiguration(RecordFile);
+        instance = this;
+    }
+
+
+    public static Record get() {
+        return instance;
+    }
+	
+    
+    public void carregarRecorde(File file, FileConfiguration configuration) {
+  	  try {
+  		Record.load(RecordFile);
+  	  } catch (Exception e) {
+  	    e.printStackTrace();
+  	  }
+  	}
+    
+    
+    public void saveRecordes(){
+		  try {
+			  Record.save(RecordFile);
+		  } catch (Exception e) {
+			  e.printStackTrace();
+		  }
+	  }
+    
+}
