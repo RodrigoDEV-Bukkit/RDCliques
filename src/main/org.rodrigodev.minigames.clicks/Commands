@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -97,7 +96,7 @@ public class Commands implements Listener, CommandExecutor{
 
 	  @EventHandler
 	  public void DamageVillager(EntityDamageByEntityEvent e) {
-	    if (((e.getEntity() instanceof Villager)) && ((e.getDamager() instanceof Player)) && ((e.getDamager() instanceof Zombie)))
+	    if (((e.getEntity() instanceof Villager)) && ((e.getDamager() instanceof Player)))
 	    {
 	      Villager vill = (Villager)e.getEntity();
 
@@ -107,5 +106,6 @@ public class Commands implements Listener, CommandExecutor{
 	      }
 	    }
 	  }
-
+	  
+	  
 }
